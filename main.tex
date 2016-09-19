@@ -91,17 +91,46 @@
   \begin{center}
     \begin{itemize}
       \item Architecture la plus \emph{intuitive}
-      \item L'application propose son propre système d'authentification
+      \item Propose son propre système d'authentification
+      \item[~]
+      \item Utilise généralement nom d'utilisateur/mot de passe
+      \item Possible d'ajouter d'autres facteurs d'authentification
+      \begin{itemize}
+        \item Code d'accès
+        \item Jeton d'authentification
+      \end{itemize}
     \end{itemize}
   \end{center}
 \end{frame}
 
 \subsection{Architecture}
 
-\begin{frame}{Authentification locale}{Architecture}
-  \begin{itemize}
-    \item TODO
-  \end{itemize}
+\begin{frame}{Architecture}
+  \begin{center}
+    \begin{tikzpicture}
+
+      \node (user) { \includegraphics[width=0.05\textwidth]{img/user.pdf} };
+
+      \node[right=2.5 of user, align=center] (application) { \includegraphics[width=0.10\textwidth]{img/server} };
+      \node[below=0.25 of application] { Application };
+
+      \node[right=3 of application] (database) { \includegraphics[width=0.08\textwidth]{img/database} };
+      \node[below=0.25 of database] { Base de données };
+
+      \uncover<1->{
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] (user) edge  node[above, align=center, yshift=5, scale=0.5] {1 - Soumet ses identifants} (application);
+      }
+
+      \uncover<2->{
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] ([yshift=5]application.east) edge  node[above, align=center, yshift=5, scale=0.5] {2 - Vérifie les informations de connexion} ([yshift=5]database.west);
+      }
+
+      \uncover<3->{
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] ([yshift=-5]database.west) edge  node[below, align=center, yshift=-5, scale=0.5] {3 - Confirme l'identité} ([yshift=-5]application.east);
+      }
+
+    \end{tikzpicture}
+  \end{center}
 \end{frame}
 
 \subsection{Avantages vs Inconvénients}
@@ -121,10 +150,48 @@
       \begin{itemize}
         \item \emph{Simple} de faire des erreurs
         \item Pas de distinction entre le service \emph{métier} et le service \emph{d'authentification}
-        \item Complexe de répliquer l'environnement
         \item Un compte supplémentaire pour l'utilisateur...
       \end{itemize}
     \end{itemize}
+  \end{center}
+\end{frame}
+
+\subsection{Bonnes pratiques}
+
+\begin{frame}{Authentification locale}{Bonnes pratiques}
+  \begin{center}
+    \begin{block}{HTTPS}
+      \begin{itemize}
+        \item Chiffre les échanges entre le client et le serveur
+        \item Prémunit des attaques \emph{man-in-the-middle}
+      \end{itemize}
+    \end{block}
+    \begin{block}{Chiffrer le mot de passe}
+      \begin{itemize}
+        \item Ne pas stocker le mot de passe en clair
+        \item Utiliser des méthodes \emph{lentes}
+          \begin{itemize}
+            \item Bcrypt
+            \item PBKDF2
+          \end{itemize}
+      \end{itemize}
+    \end{block}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Authentification locale}{Bonnes pratiques - suite}
+  \begin{center}
+    \begin{block}{Ajouter un sel}
+      \begin{itemize}
+        \item Chaîne de caractères aléatoires
+        \item Différente pour chaque utilisateur
+        \item Protège de
+          \begin{itemize}
+            \item Attaques par dictionnaire
+            \item Rainbow table
+          \end{itemize}
+      \end{itemize}
+    \end{block}
   \end{center}
 \end{frame}
 
@@ -173,7 +240,7 @@
       \node[above right=3 of user] (identityProvider) { \includegraphics[width=0.10\textwidth]{img/server} };
       \node[above=0.25 of identityProvider] { Fournisseur d'identité };
 
-      
+
       \uncover<1-4>{
         \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] (user.west) edge[bend left]  node[left, align=center, xshift=-5, scale=0.5] {1 - Accède au service} (serviceProvider.south);
       }
@@ -191,7 +258,7 @@
       }
       \uncover<6->{
         \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] (user.west) edge[bend left]  node[left, align=center, xshift=-5, scale=0.5] {1 - Accède au service,\\6 - Transmet la preuve} (serviceProvider.south);
-        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] ([yshift=5]serviceProvider.east) edge node[above, align=center, scale=0.5, yshift=5] {7 - Demande confirmation de l'identité} ([yshift=5]identityProvider.west); 
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] ([yshift=5]serviceProvider.east) edge node[above, align=center, scale=0.5, yshift=5] {7 - Demande confirmation de l'identité} ([yshift=5]identityProvider.west);
       }
       \uncover<7->{
         \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] ([yshift=-5]identityProvider.west) edge node[below, align=center, scale=0.5, yshift=-5] {8 - Confirme l'identité} ([yshift=-5]serviceProvider.east);
@@ -212,15 +279,32 @@
   \end{center}
 \end{frame}
 
-\begin{frame}{OAuth}
+\begin{frame}{Protocole OAuth}
   \begin{center}
     \begin{itemize}
       \item Protocole d'\emph{autorisation}
+      \item Actuellement en version 2.0
+      \item Supporté par les géants du web
+      \begin{itemize}
+        \item Google, Facebook, Slack...
+      \end{itemize}
       \item[~]
-      \item Ne parle plus de fournisseur d'identité...
-      \item ... Mais de \textbf{serveur de ressources (Resource server)}
-      \item Permet au propriétaire d'une ressource (\textbf{Resource owner}) d'autoriser une application tierce à accéder à la ressource
+      \item Ne parle plus d'\emph{identités} mais de \emph{ressources}
+        \begin{itemize}
+          \item Propriétaire de ressources (Resource owner)
+          \item Serveur de ressources (Resource server)
+          \item Application cliente (Client)
+        \end{itemize}
+    \end{itemize}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Protocole OAuth - explications}
+  \begin{center}
+    \begin{itemize}
+      \item Permet d'autoriser une application tierce à accéder à une ressource
       \pause
+      \item[~]
       \begin{exampleblock}{OAuth avec Google}
         Permet de donner l'autorisation à un service de:
         \pause
@@ -250,7 +334,7 @@
 \begin{frame}{OpenID Connect}
   \begin{center}
     \begin{itemize}
-    \item Available at \url{https://plm.telecomnancy.univ-lorraine.fr}
+    \item Nouveau protocole basé sur OAuth 2.0
     \end{itemize}
   \end{center}
 \end{frame}
@@ -263,10 +347,8 @@
       \item Avantages
       \begin{itemize}
         \item Interopérabilité
-        \item Flexibilité
         \item Scalabilité
-        \item SSO
-        \item Pas besoin de partager les credentials
+        \item Single Sign-On
       \end{itemize}
       \pause
       \item[~]
@@ -275,7 +357,7 @@
         \item Plus \emph{complexe} à bien implémenter
         \item Dépendant de services tiers
         \begin{itemize}
-          \item Disparation du fournisseur d'identité?
+          \item Disparition du fournisseur d'identité?
           \item Fournisseur d'identité compromis?
         \end{itemize}
       \end{itemize}
