@@ -1,0 +1,22 @@
+* [[https://pdfs.semanticscholar.org/3733/2607f7a7ac8284c514845957fd00583e5614.pdf][Different Ways to Authenticate Users with the Pros and Cons of each Method]]
+- Good definition of *Authentication*.
+- Talks about multi-factors Authentication:
+  - Passwords
+  - Smart cards
+  - X509 certificate
+  - Biometrics
+- For each, presents the pros and cons and the vulnerabilities as well.
+* [[http://stackoverflow.com/questions/663402/what-are-the-differences-between-ldap-and-active-directory][What are the differences between LDAP and Active Directory?]]
+- Gives the definition of *Directory Service*, *Active Directory* and *Lightweight Directory Access Protocol*
+* [[http://programmers.stackexchange.com/questions/46420/what-are-the-pros-and-cons-of-using-sign-in-with-twitter-facebook-for-a-new][What are the pros (and cons) of using “Sign in with Twitter/Facebook” for a new website?]]
+- Gives the some clues about the pros and cons of delegating the authentication
+* [[https://www.neustar.biz/blog/what-is-single-sign-on-deployment-pros-cons][The Pros & Cons of Implementing Single Sign-On]]
+- Explains the differences between *Full Sign-On*, *Reduced Sign-On* and *Federated Logins*
+* [[https://tools.ietf.org/html/rfc6749][RFC 6749 - The OAuth 2.0 Authorization Framework]]
+- Can find the *Protocol Flow* here
+* [[https://en.wikipedia.org/wiki/OAuth#/media/File:OpenIDvs.Pseudo-AuthenticationusingOAuth.svg][OpenID Authentication vs Pseudo-Authentication using OAuth]]
+- Presents the subtle nuance between these two ways to authenticate
+* [[http://wiki.openid.net/w/page/12995171/Introduction][OpenID explaination]]
+- Covers quite fully the OpenID protocol
+  - Flow
+  - Parameters
