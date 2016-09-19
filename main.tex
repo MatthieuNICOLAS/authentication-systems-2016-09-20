@@ -91,7 +91,7 @@
   \begin{center}
     \begin{itemize}
       \item Architecture la plus \emph{intuitive}
-      \item L'application implémente son propre système d'authentification
+      \item L'application propose son propre système d'authentification
     \end{itemize}
   \end{center}
 \end{frame}
@@ -113,13 +113,16 @@
       \begin{itemize}
         \item Solution relativement \emph{simple}
         \item Maîtrise de l'environnement
+        \item Confidentialité
       \end{itemize}
       \pause
+      \item[~]
       \item Inconvénients
       \begin{itemize}
         \item \emph{Simple} de faire des erreurs
         \item Pas de distinction entre le service \emph{métier} et le service \emph{d'authentification}
-        \item Un compte supplémentaire...
+        \item Complexe de répliquer l'environnement
+        \item Un compte supplémentaire pour l'utilisateur...
       \end{itemize}
     \end{itemize}
   \end{center}
@@ -142,13 +145,16 @@
 \begin{frame}{Authentification déléguée}{Principe}
   \begin{center}
     \begin{itemize}
-      \item Sépare le rôle des composants
+      \item Sépare le rôle des différents composants :
       \begin{itemize}
         \item \textbf{Fournisseur d'identité (Identity Provider)}
         \item \textbf{Fournisseur de service (Service Provider)}
       \end{itemize}
-      \item Pour pouvoir utiliser le service, un utilisateur doit déjà fournir une preuve de son identité
-      \item TODO
+      \item[~]
+      \item Pour pouvoir utiliser le service, l'utilisateur doit fournir une preuve de son identité
+      \item[~]
+      \item Un seul service peut être compatible avec plusieurs fournisseurs d'identité
+      \item Un seul compte permet de s'authentifier auprès de plusieurs services (\textbf{Single Sign-On : SSO})
     \end{itemize}
   \end{center}
 \end{frame}
@@ -157,9 +163,41 @@
 
 \begin{frame}{Architecture}
   \begin{center}
-    \begin{itemize}
-    \item Available at \url{https://plm.telecomnancy.univ-lorraine.fr}
-    \end{itemize}
+    \begin{tikzpicture}
+
+      \node (user) { \includegraphics[width=0.05\textwidth]{img/user.pdf} };
+
+      \node[above left=3 of user, align=center] (serviceProvider) { \includegraphics[width=0.10\textwidth]{img/server} };
+      \node[above=0.25 of serviceProvider] { Fournisseur de service };
+
+      \node[above right=3 of user] (identityProvider) { \includegraphics[width=0.10\textwidth]{img/server} };
+      \node[above=0.25 of identityProvider] { Fournisseur d'identité };
+
+      
+      \uncover<1-4>{
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] (user.west) edge[bend left]  node[left, align=center, xshift=-5, scale=0.5] {1 - Accède au service} (serviceProvider.south);
+      }
+      \uncover<2->{
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] (serviceProvider.south) edge[bend left]  node[right, xshift=5, scale=0.5] {2 - Redirige l'utilisateur} (user.west);
+      }
+      \uncover<3->{
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] (user.east) edge[bend right] node[right, align=center, scale=0.5, xshift=5] {3 - S'authentifie,\\4 - Autorise l'accès} (identityProvider.south);
+      }
+      \uncover<4->{
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] (identityProvider.south) edge[bend right] node[above left, align=center, scale=0.5, xshift=30, yshift=30] {5 - Fournit une preuve d'identité} (user.east);
+      }
+      \uncover<5>{
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] (user.west) edge[bend left]  node[left, align=center, xshift=-5, scale=0.5] {1 - Accède au service,\\\textbf{6 - Transmet la preuve}} (serviceProvider.south);
+      }
+      \uncover<6->{
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] (user.west) edge[bend left]  node[left, align=center, xshift=-5, scale=0.5] {1 - Accède au service,\\6 - Transmet la preuve} (serviceProvider.south);
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] ([yshift=5]serviceProvider.east) edge node[above, align=center, scale=0.5, yshift=5] {7 - Demande confirmation de l'identité} ([yshift=5]identityProvider.west); 
+      }
+      \uncover<7->{
+        \path[->, dotted, thick, shorten >=3pt, shorten <=3pt] ([yshift=-5]identityProvider.west) edge node[below, align=center, scale=0.5, yshift=-5] {8 - Confirme l'identité} ([yshift=-5]serviceProvider.east);
+      }
+
+    \end{tikzpicture}
   \end{center}
 \end{frame}
 
@@ -178,10 +216,25 @@
   \begin{center}
     \begin{itemize}
       \item Protocole d'\emph{autorisation}
-      \item Ne parle pas de fournisseur d'identité, mais de \textbf{serveur de ressources (Resource server)}
-      \item Permet à un utilisateur (\textbf{Resource owner}) de donner un accès à une ressource à une application tierce
       \item[~]
-      \item Mais utilisé de façon détourné pour faire de la \emph{pseudo-authentification}
+      \item Ne parle plus de fournisseur d'identité...
+      \item ... Mais de \textbf{serveur de ressources (Resource server)}
+      \item Permet au propriétaire d'une ressource (\textbf{Resource owner}) d'autoriser une application tierce à accéder à la ressource
+      \pause
+      \begin{exampleblock}{OAuth avec Google}
+        Permet de donner l'autorisation à un service de:
+        \pause
+        \begin{itemize}
+          \item Récupérer les informations de son profil
+          \pause
+          \item Ajouter un évènement dans son calendrier
+          \pause
+          \item Envoyer des mails en son nom
+        \end{itemize}
+      \end{exampleblock}
+      \pause
+      \item[~]
+      \item Utilisé de façon détournée pour faire de la \emph{pseudo-authentification}
     \end{itemize}
   \end{center}
 \end{frame}
@@ -215,12 +268,20 @@
         \item SSO
         \item Pas besoin de partager les credentials
       \end{itemize}
+      \pause
+      \item[~]
       \item Inconvénients
       \begin{itemize}
-        \item Plus \emph{compliqué} à bien implémenter
+        \item Plus \emph{complexe} à bien implémenter
         \item Dépendant de services tiers
-        \item Compte tiers compromis $\rightarrow$ Service compromis
+        \begin{itemize}
+          \item Disparation du fournisseur d'identité?
+          \item Fournisseur d'identité compromis?
+        \end{itemize}
       \end{itemize}
+      \pause
+      \item[~]
+      \item Mais rien n'empêche d'implémenter son propre fournisseur d'identité
     \end{itemize}
   \end{center}
 \end{frame}
