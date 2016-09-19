@@ -20,3 +20,5 @@
 - Covers quite fully the OpenID protocol
   - Flow
   - Parameters
+* [[https://tools.ietf.org/html/draft-ietf-oauth-native-apps-03][Authorization Flow for Native Apps Using App-Claimed URI Schemes]]
+* [[http://wiki.oauth.net/w/page/27249271/OAuth%202%20for%20Native%20Apps][OAuth 2 for Native Apps ]]

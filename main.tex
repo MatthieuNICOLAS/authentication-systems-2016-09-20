@@ -13,6 +13,7 @@
 \documentclass{beamer}
 
 \usepackage{tikz}
+\usepackage[utf8]{inputenc}
 \usetikzlibrary{automata, matrix,shapes.multipart,shapes.geometric,fit,scopes,positioning}
 
 \definecolor{blue-base}{RGB}{42, 79, 110}
@@ -53,20 +54,20 @@
 %\usetheme{Szeged}
 %\usetheme{Warsaw}
 
-\title{ADT PLM}
+\title{Mécanismes d'authentification}
 
 % A subtitle is optional and this may be deleted
-\subtitle{Programmer's Learning Machine}
+\subtitle{État de l'art}
 
 \author{Matthieu~Nicolas}
 
-\date{IJD Seminar, 2016-02-02}
+\date{20/09/2016}
 
 \subject{Theoretical Computer Science}
 
 \AtBeginSection[]
 {
-  \begin{frame}<beamer>{Outline}
+  \begin{frame}<beamer>{Plan}
     \tableofcontents[currentsection]
   \end{frame}
 }
@@ -77,38 +78,156 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Outline}
+\begin{frame}{Plan}
   \tableofcontents
   % You might wish to add the option [pausesections]
 \end{frame}
 
-\section{Presentation of PLM}
+\section{Authentification locale}
 
-\subsection{Purposes}
+\subsection{Principe}
 
-\begin{frame}{Presentation of PLM}{Purposes}
+\begin{frame}{Authentification locale}{Principe}
+  \begin{center}
+    \begin{itemize}
+      \item Architecture la plus \emph{intuitive}
+      \item L'application implémente son propre système d'authentification
+    \end{itemize}
+  \end{center}
+\end{frame}
+
+\subsection{Architecture}
+
+\begin{frame}{Authentification locale}{Architecture}
   \begin{itemize}
-  \item {
-    Application to learn programming.
-    \pause
-  }
-  \item {
-    Allows students to progress at their own speed...
-    \pause
-  }
-  \item {
-    ... while the teacher helps the ones having trouble.
-    \pause
-  }
-  \item {
-    Used at TELECOM Nancy since 2008.
-  }
+    \item TODO
   \end{itemize}
 \end{frame}
 
-\subsection{Demo}
+\subsection{Avantages vs Inconvénients}
 
-\begin{frame}{Presentation of PLM}{Quick demo}
+\begin{frame}{Authentification locale}{Avantages vs Inconvénients}
+  \begin{center}
+    \begin{itemize}
+      \item Avantages
+      \begin{itemize}
+        \item Solution relativement \emph{simple}
+        \item Maîtrise de l'environnement
+      \end{itemize}
+      \pause
+      \item Inconvénients
+      \begin{itemize}
+        \item \emph{Simple} de faire des erreurs
+        \item Pas de distinction entre le service \emph{métier} et le service \emph{d'authentification}
+        \item Un compte supplémentaire...
+      \end{itemize}
+    \end{itemize}
+  \end{center}
+\end{frame}
+
+\subsection{Frameworks \& Librairies}
+
+\begin{frame}{Authentification locale}{Frameworks \& Librairies}
+  \begin{center}
+    \begin{itemize}
+    \item Available at \url{https://plm.telecomnancy.univ-lorraine.fr}
+    \end{itemize}
+  \end{center}
+\end{frame}
+
+\section{Authentification déléguée}
+
+\subsection{Principe}
+
+\begin{frame}{Authentification déléguée}{Principe}
+  \begin{center}
+    \begin{itemize}
+      \item Sépare le rôle des composants
+      \begin{itemize}
+        \item \textbf{Fournisseur d'identité (Identity Provider)}
+        \item \textbf{Fournisseur de service (Service Provider)}
+      \end{itemize}
+      \item Pour pouvoir utiliser le service, un utilisateur doit déjà fournir une preuve de son identité
+      \item TODO
+    \end{itemize}
+  \end{center}
+\end{frame}
+
+\subsection{Architecture}
+
+\begin{frame}{Architecture}
+  \begin{center}
+    \begin{itemize}
+    \item Available at \url{https://plm.telecomnancy.univ-lorraine.fr}
+    \end{itemize}
+  \end{center}
+\end{frame}
+
+\subsection{Différences entre OpenID \& OAuth}
+
+\begin{frame}{OpenID}
+  \begin{center}
+    \begin{itemize}
+      \item Protocole d'\emph{authentification}
+      \item TODO
+    \end{itemize}
+  \end{center}
+\end{frame}
+
+\begin{frame}{OAuth}
+  \begin{center}
+    \begin{itemize}
+      \item Protocole d'\emph{autorisation}
+      \item Ne parle pas de fournisseur d'identité, mais de \textbf{serveur de ressources (Resource server)}
+      \item Permet à un utilisateur (\textbf{Resource owner}) de donner un accès à une ressource à une application tierce
+      \item[~]
+      \item Mais utilisé de façon détourné pour faire de la \emph{pseudo-authentification}
+    \end{itemize}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Différences entre OpenID \& OAuth}
+  \begin{center}
+    \includegraphics[width=0.75\textwidth]{img/OpenIDvsPseudo-AuthenticationusingOAuth}
+  \end{center}
+\end{frame}
+
+\subsection{OpenID Connect}
+
+\begin{frame}{OpenID Connect}
+  \begin{center}
+    \begin{itemize}
+    \item Available at \url{https://plm.telecomnancy.univ-lorraine.fr}
+    \end{itemize}
+  \end{center}
+\end{frame}
+
+\subsection{Avantages vs Inconvénients}
+
+\begin{frame}{Authentification déléguée}{Avantages vs Inconvénients}
+  \begin{center}
+    \begin{itemize}
+      \item Avantages
+      \begin{itemize}
+        \item Interopérabilité
+        \item Flexibilité
+        \item Scalabilité
+        \item SSO
+        \item Pas besoin de partager les credentials
+      \end{itemize}
+      \item Inconvénients
+      \begin{itemize}
+        \item Plus \emph{compliqué} à bien implémenter
+        \item Dépendant de services tiers
+        \item Compte tiers compromis $\rightarrow$ Service compromis
+      \end{itemize}
+    \end{itemize}
+  \end{center}
+\end{frame}
+
+\subsection{Frameworks \& Librairies}
+
+\begin{frame}{Authentification déléguée}{Frameworks \& Librairies}
   \begin{center}
     \begin{itemize}
     \item Available at \url{https://plm.telecomnancy.univ-lorraine.fr}
@@ -120,7 +239,7 @@
 
 \begin{frame}{Questions}
   \begin{center}
-    Thanks for your attention, any questions?
+    Merci pour votre attention, avez-vous des questions?
   \end{center}
 \end{frame}
 
