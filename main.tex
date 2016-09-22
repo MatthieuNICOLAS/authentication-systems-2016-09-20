@@ -94,7 +94,13 @@
       \item Propose son propre système d'authentification
       \item[~]
       \item Utilise généralement nom d'utilisateur/mot de passe
-      \item Possible d'ajouter d'autres facteurs d'authentification
+      \item {
+        Possible d'ajouter d'autres facteurs d'authentification
+        \footnote[frame]{
+          \emph{Different Ways to Authenticate Users with the Pros and Cons of each Method} :
+          \url{https://pdfs.semanticscholar.org/3733/2607f7a7ac8284c514845957fd00583e5614.pdf}
+        }
+      }
       \begin{itemize}
         \item Code d'accès
         \item Jeton d'authentification
@@ -179,7 +185,13 @@
   \end{center}
 \end{frame}
 
-\begin{frame}{Authentification locale}{Bonnes pratiques - suite}
+\begin{frame}{Authentification locale}{
+    Bonnes pratiques - suite
+    \footnote[frame]{
+      \emph{Authentication Cheat Sheet} :
+      \url{https://www.owasp.org/index.php/Authentication_Cheat_Sheet}
+    }
+  }
   \begin{center}
     \begin{block}{Ajouter un sel}
       \begin{itemize}
@@ -202,16 +214,16 @@
     \begin{itemize}
       \item Java/Scala
       \begin{itemize}
-        \item Spring Security : \href{url}{http://projects.spring.io/spring-security/}
-        \item Silhouette : \href{url}{http://silhouette.mohiva.com/}
+        \item Spring Security : \url{http://projects.spring.io/spring-security/}
+        \item Silhouette : \url{http://silhouette.mohiva.com/}
       \end{itemize}
       \item PHP
       \begin{itemize}
-        \item Symfony FOSUserBundle : \href{url}{http://symfony.com/doc/current/bundles/FOSUserBundle/index.html}
+        \item Symfony FOSUserBundle : \url{http://symfony.com/doc/current/bundles/FOSUserBundle/index.html}
       \end{itemize}
       \item NodeJS
       \begin{itemize}
-        \item MEAN.JS : \href{url}{http://meanjs.org/}
+        \item MEAN.JS : \url{http://meanjs.org/}
       \end{itemize}
     \end{itemize}
   \end{center}
@@ -233,7 +245,13 @@
       \item Pour pouvoir utiliser le service, l'utilisateur doit fournir une preuve de son identité
       \item[~]
       \item Un seul service peut être compatible avec plusieurs fournisseurs d'identité
-      \item Un seul compte permet de s'authentifier auprès de plusieurs services (\textbf{Single Sign-On : SSO})
+      \item {
+        Un seul compte permet de s'authentifier auprès de plusieurs services (\textbf{Single Sign-On : SSO})
+        \footnote[frame]{
+          \emph{The Pros \& Cons of Implementing Single Sign-On} :
+          \url{https://www.neustar.biz/blog/what-is-single-sign-on-deployment-pros-cons}
+        }
+      }
     \end{itemize}
   \end{center}
 \end{frame}
@@ -285,7 +303,13 @@
 \begin{frame}{Authentification déléguée}{Protocole OpenID}
   \begin{center}
     \begin{itemize}
-      \item Protocole d'\emph{authentification}
+      \item {
+        Protocole d'\emph{authentification}
+        \footnote[frame]{
+          \emph{OpenID explaination} :
+          \url{http://wiki.openid.net/w/page/12995171/Introduction}
+        }
+      }
       \item Actuellement déprécié
       \item Auparavant supporté par Google, Microsoft, Paypal...
       \item[~]
@@ -339,9 +363,9 @@
   \end{center}
 \end{frame}
 
-\begin{frame}{Différences entre OpenID \& OAuth}
+\begin{frame}{Authentification déléguée}{Différences entre OpenID \& OAuth }
   \begin{center}
-    \includegraphics[width=0.75\textwidth]{img/OpenIDvsPseudo-AuthenticationusingOAuth}
+    \includegraphics[width=0.70\textwidth]{img/OpenIDvsPseudo-AuthenticationusingOAuth}
   \end{center}
 \end{frame}
 
@@ -350,7 +374,13 @@
 \begin{frame}{Authentification déléguée}{OpenID Connect}
   \begin{center}
     \begin{itemize}
-    \item Nouvelle version du protocole OpenID
+    \item {
+      Nouvelle version du protocole OpenID
+      \footnote[frame]{
+        \emph{OpenID Connect in a nutshell} :
+        \url{http://nat.sakimura.org/2012/01/20/openid-connect-nutshell/}
+      }
+    }
     \item Actuellement supporté par Google, Microsoft, Paypal...
     \item[~]
     \item Basé sur OAuth 2.0
@@ -380,7 +410,13 @@
           \item Disparition du fournisseur d'identité?
           \item Fournisseur d'identité compromis?
         \end{itemize}
-        \item Repose sur l'utilisation d'un navigateur web
+        \item {
+          Repose sur l'utilisation d'un navigateur web
+          \footnote[frame]{
+            \emph{OAuth 2 for Native Apps} :
+            \url{http://wiki.oauth.net/w/page/27249271/OAuth for Native Apps}
+          }
+        }
       \end{itemize}
       \pause
       \item[~]
@@ -401,11 +437,11 @@
       \end{itemize}
       \item Librairies pour OpenID Connect :
       \begin{itemize}
-        \item \href{url}{http://openid.net/developers/libraries/}
+        \item \url{http://openid.net/developers/libraries/}
       \end{itemize}
       \item Librairies pour OAuth 2.0 :
       \begin{itemize}
-        \item \href{url}{https://oauth.net/code/}
+        \item \url{https://oauth.net/code/}
       \end{itemize}
     \end{itemize}
   \end{center}
